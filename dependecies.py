@@ -1,6 +1,7 @@
 from datetime import date
 from decimal import Decimal
 from nameko.extensions import DependencyProvider
+import boto3
 
 import mysql.connector
 from mysql.connector import Error
@@ -9,6 +10,8 @@ from mysql.connector import pooling
 class DatabaseWrapper:
 
     connection = None
+    BUCKET_NAME = 'hotel-images'
+    s3 = boto3.client('s3')
 
     def __init__(self, connection):
         self.connection = connection
