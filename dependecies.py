@@ -66,7 +66,7 @@ class DatabaseWrapper:
                 'post_code': row['post_code']
             }
         else:
-            return {'message': 'empty data','status': 200}
+            return {'message': 'empty data','status': 500}
         cursor.close()
         return result
     

@@ -10,9 +10,10 @@
 		<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.2/dist/full.min.css" rel="stylesheet" type="text/css" />
 		<link rel="stylesheet" href="assets/css/output.css">
 		<script src="assets/js/script.js" defer></script>
+		<script src="assets/js/fetchAPI.js"></script>
 		<style>
 			.header-bg {
-			background-image: url('assets/img/2.jpg');
+			background-image: url();
 			background-size: cover;
 			background-position: center;
 			}
@@ -95,7 +96,7 @@
 					</div>
 				</div>
 			</header>
-			<div class="header-bg h-screen w-full">
+			<div class="header-bg h-screen w-full" id="header-background">
 				<div class="relative isolate px-6 pt-32 lg:px-8 text-white">
 					<div class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
 					</div>
@@ -107,14 +108,14 @@
 			<div class="container flex flex-col md:flex-row w-screen mx-auto m-10" id="about-us">
 				<div class="flex-1 flex flex-col items-center" id="about-us">
 					<h1 class="font-bold m-10 text-center text-5xl">About Us</h1>
-					<div class="bg-slate-200 rounded-lg p-10 w-3/4 text-2xl text-justify">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Est nemo possimus deleniti molestias, nostrum suscipit provident fugit reprehenderit atque accusamus vel eaque sunt ad iusto animi, modi, illo sint! Voluptatibus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum officiis odit ab quisquam eum assumenda molestiae nobis obcaecati aliquid? Sint nisi exercitationem autem temporibus quis quo voluptatum nobis necessitatibus.
+					<div class="bg-slate-200 rounded-lg p-10 w-3/4 text-2xl text-justify" id="about-us-content">
+						<!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Est nemo possimus deleniti molestias, nostrum suscipit provident fugit reprehenderit atque accusamus vel eaque sunt ad iusto animi, modi, illo sint! Voluptatibus? Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque laborum officiis odit ab quisquam eum assumenda molestiae nobis obcaecati aliquid? Sint nisi exercitationem autem temporibus quis quo voluptatum nobis necessitatibus.</p> -->
 					</div>
 				</div>
 				<div class="flex-1 flex flex-col items-center" id="about-us">
 					<h1 class="font-bold m-10 text-center text-5xl">Our Facilities</h1>
-					<div class="bg-slate-200 rounded-lg p-10 w-3/4 text-2xl text-justify">
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem animi ab sunt eaque assumenda exercitationem laudantium magni blanditiis quia ratione, distinctio quam perspiciatis sequi atque quisquam perferendis sint. Sunt, distinctio! Lorem ipsum dolor sit amet consectetur, adipisicing elit.
+					<div class="bg-slate-200 rounded-lg p-10 w-3/4 text-2xl text-justify" id="facilities-content">
+						<!-- <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem animi ab sunt eaque assumenda exercitationem laudantium magni blanditiis quia ratione, distinctio quam perspiciatis sequi atque quisquam perferendis sint. Sunt, distinctio! Lorem ipsum dolor sit amet consectetur, adipisicing elit.</p> -->
 					</div>
 				</div>
 			</div>
@@ -126,20 +127,12 @@
 			<!-- Room Type -->
 			<div class="container w-screen justify-items-center mx-auto m-24" id="rooms">
 				<h1 class="font-bold m-10 text-center text-5xl">Recommended Room</h1>
-				<div class="max-w-4xl mx-auto relative" x-data="{
-					activeSlide: 1,
-					slides: [
-					{ id: 1, name: 'Julian Room', price: 'IDR 1,250,000', gambar: 'assets/img/4.jpg', facility: 'AC, Non Smoking Rooms, Free WiFi, TV, Bathroom', detail: 'King Size, (40.5 sq-meter) room with city views' },
-					{ id: 2, name: 'Odette Room', price: 'IDR 5,123,000', gambar: 'assets/img/3.jpg',facility: 'AC, Complimentary bottled water, Minibar, Refrigerator, Non Smoking Rooms, Free WiFi, TV, Bathroom', detail: '(194.302 sq-meter)room with city views' },
-					{ id: 3, name: 'Helcurt Room', price: 'IDR 1,590,000', gambar: 'assets/img/5.jpg',facility: 'AC, Non Smoking Rooms, Free WiFi, TV, Bathroom', detail: 'King Size, (60.75 sq-meter) room with city views' }
-					],
-                    modalData: {}
-					}">
+				<div class="max-w-4xl mx-auto relative" x-data="getRoomType()">
 					<template x-for="slide in slides" :key="slide.id">
 						<div x-show="activeSlide === slide.id" class="relative p-24 h-[40rem] flex items-center bg-slate-500 rounded-lg overflow-hidden" x-data="{ open : false }">
-							<img :src="slide.gambar" alt="" class="absolute inset-0 w-full h-full object-cover">
+							<img :src="slide.image" alt="" class="absolute inset-0 w-full h-full object-cover">
 							<div class="absolute bottom-0 left-0  bg-opacity-50 p-4 text-white">
-								<h2 class="text-3xl font-bold mb-2" x-text="slide.name"></h2>
+								<h2 class="text-3xl font-bold mb-2" x-text="slide.type"></h2>
 								<p class="text-xl" x-text="slide.price"></p>
 							</div>
 							<button @click="open = true; modalData = slide" class="absolute bottom-4 right-4 bg-white text-black px-4 py-2 rounded text-xl">Discover</button>
@@ -149,13 +142,13 @@
                                     <button @click="open = false" class="absolute top-4 right-4 bg-transparent text-black text-2xl font-bold">
                                         &times;
                                     </button>
-                                    <img :src="modalData.gambar" alt="Room image" class="w-full rounded-lg mb-4">
-                                    <h1 class="text-3xl font-bold" x-text="modalData.name"></h2>
+                                    <img :src="modalData.image" alt="Room image" class="w-full rounded-lg mb-4">
+                                    <h1 class="text-3xl font-bold" x-text="modalData.type"></h2>
                                     <p class="text-2xl mb-4" x-text="modalData.price"></p>
                                     <h2 class="text-2xl">Description:</h3>
                                     <p class="mb-4 text-xl" x-text="modalData.detail"></p>
                                     <h2 class="text-2xl">Facilities:</h3>
-                                    <p class="mb-4 text-xl" x-text="modalData.facility"></p>
+                                    <p class="mb-4 text-xl" x-text="modalData.facilities"></p>
                                     
                                 </div>
                             </div>
@@ -181,5 +174,7 @@
 				<div class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
 			</div>
 		</div>
+
+		<script src="assets/js/fetchAPI.js" defer></script>
 	</body>
 </html>
