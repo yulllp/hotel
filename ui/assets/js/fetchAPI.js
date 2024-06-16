@@ -10,8 +10,14 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             console.log(data);
             if (data) {
-                const header = document.getElementById('header-background')
-                header.style.backgroundImage = `url('${data.image}')`
+                const header = document.getElementById('header-background');
+                header.style.backgroundImage = `url('${data.image}')`;
+
+                const welcomeContainer = document.getElementById('welcome');
+                welcomeContainer.innerHTML = `
+                    <p>WELCOME TO</p>
+                    <p>${data.name}</p>
+                `;
                 // Update About Us section
                 const aboutUsContent = document.getElementById('about-us-content');
                 aboutUsContent.innerHTML = `
@@ -21,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const facilitiesContent = document.getElementById('facilities-content');
                 facilitiesContent.innerHTML = `
                     <p>${data.facilities}</p>
+                `;
+                const locationContent = document.getElementById('location-content');
+                locationContent.innerHTML = `
+                    <p class="text-center">${data.address}</p>
                 `;
             } // Return the hotel data
         } catch (error) {
