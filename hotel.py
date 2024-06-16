@@ -29,7 +29,7 @@ class HotelService:
     
     @rpc
     def get_rooms_by_type_id(self, id):
-        rooms = self.database.get_rooms_by_id(id)
+        rooms = self.database.get_rooms_by_type_id(id)
         return rooms
     
     @rpc
@@ -49,7 +49,7 @@ class HotelService:
     
     @rpc
     def get_room_type_availability(self, check_in_date, check_out_date):
-        response = self.database.get_room_type_availabilty(check_in_date=check_in_date, check_out_date=check_out_date)
+        response = self.database.get_room_type_availability(check_in_date=check_in_date, check_out_date=check_out_date)
         return response
     
     @rpc
